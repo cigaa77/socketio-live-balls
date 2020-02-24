@@ -18,11 +18,12 @@ block content
               span.name Joe
               .message this is awesome
         .ui.items.chat
-          .item
-            .content
-              a.header.name Mehmet
+          .item(ng-repeat='message in messages')
+            .content(ng-if='!message.type')
+              span [SERVER] &nbsp;
+              a.header.name {{message.username}} &nbsp;
               .description.message
-                | Selam
+                | katıldı
           .item
             .content
               a.header.name Alp
