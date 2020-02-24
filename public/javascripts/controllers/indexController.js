@@ -25,8 +25,22 @@ app.controller('indexController', ['$scope', 'indexFactory', ($scope, indexFacto
 
                 socket.on('newUser', (data) => {
                     const messageData = {
-                        type: 0, // info
+                        type: {
+                            code: 0,//  server or user message
+                            message: 0// connect or disconnect message
+                        },
                         username: data.username
+                    };
+                    $scope.messages.push(messageData);
+                    $scope.$apply();
+                })
+                socket.on('disUser', (user) => {
+                    const messageData = {
+                        type: {
+                            code: 0,//  server or user message
+                            message: 1// connect or disconnect message
+                        },
+                        username: user.username
                     };
                     $scope.messages.push(messageData);
                     $scope.$apply();
