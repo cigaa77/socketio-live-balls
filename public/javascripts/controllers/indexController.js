@@ -37,7 +37,7 @@ app.controller('indexController', ['$scope', 'indexFactory', ($scope, indexFacto
                         username: data.username
                     };
                     $scope.messages.push(messageData);
-                    $scope.players[data.id]=data;
+                    $scope.players[data.id] = data;
                     $scope.$apply();
                 })
                 socket.on('disUser', (user) => {
@@ -54,8 +54,14 @@ app.controller('indexController', ['$scope', 'indexFactory', ($scope, indexFacto
                 })
                 $scope.onClickPlayer = ($event) => {
                     console.log($event.offsetX, $event.offsetY);
-                    $('#' + socket.id).animate({ 'left': $event.offsetX, 'top': $event.offsetY })
+                    let x = $event.offsetX, y = $event.offsetY;
+                    socket.emit('animate', { x, y })
+                    $('#' + socket.id).animate({ 'left': x, 'top': y })
                 }
+
+                socket.on('animate', (data) => {
+                    $('#' + data.socketId).animate({ 'left': data.x, 'top': data.y })
+                })
             }).catch((err) => {
                 console.log(err);
             })
