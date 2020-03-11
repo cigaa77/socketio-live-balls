@@ -37,6 +37,7 @@ app.controller('indexController', ['$scope', 'indexFactory', ($scope, indexFacto
                         username: data.username
                     };
                     $scope.messages.push(messageData);
+                    $scope.players[data.id]=data;
                     $scope.$apply();
                 })
                 socket.on('disUser', (user) => {
@@ -48,6 +49,7 @@ app.controller('indexController', ['$scope', 'indexFactory', ($scope, indexFacto
                         username: user.username
                     };
                     $scope.messages.push(messageData);
+                    delete $scope.players[user.id]
                     $scope.$apply();
                 })
                 $scope.onClickPlayer = ($event) => {
