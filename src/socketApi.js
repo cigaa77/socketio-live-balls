@@ -22,6 +22,8 @@ io.on('connection', (socket) => {
         console.log(users)
 
         socket.broadcast.emit('newUser', userData);
+        socket.emit('initPlayers', users)
+
     })
     socket.on('disconnect', () => {
         socket.broadcast.emit('disUser', users[socket.id])

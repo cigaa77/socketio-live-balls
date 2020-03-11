@@ -5,18 +5,15 @@ block content
     .ui.one.column.stackable.center.aligned.page.grid.margin-30
       .column.twelve.wide
         .ui.stacked.segment.gameArea
-          .circle.blue(style='left:150px; top:100px')
+          .circle.blue(
+            ng-repeat='player in players',
+            ng-style="{ 'left': player.position.y, 'top': player.position.x }",
+            id="{{player.id}}"
+            )
             .relative
-              span.name Mehmet
-              .message Selam
-          .circle.green(style='left:300px; top:100px')
-            .relative
-              span.name Alp
-              .message selam nasılsın :)
-          .circle.red(style='left:350px; top:300px')
-            .relative
-              span.name Joe
-              .message this is awesome
+              span.name {{player.username}}
+              //.message Selam
+          
         .ui.items.chat
           .item(ng-repeat='message in messages')
             .content(ng-if='!message.type.code')
@@ -26,21 +23,6 @@ block content
                 | katıldı
               .description.message(ng-if='message.type.message')
                 | ayrıldı
-          .item
-            .content
-              a.header.name Alp
-              .description.message
-                | selam nasılsın :)
-          .item
-            .content
-              a.header.name Joe
-              .description.message
-                | this is awesome
-          .item
-            .content
-              a.header.name Sinang
-              .description.message
-                | hey
         .ui.action.input.fluid
           input(type='text', placeholder='Type here...')
           button.ui.button Send
