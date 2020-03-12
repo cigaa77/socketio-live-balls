@@ -14,6 +14,13 @@ app.controller('indexController', ['$scope', 'indexFactory', ($scope, indexFacto
         }
     }
 
+    function scrollTop() {
+        setTimeout(() => {
+            const element = document.getElementById('chat-area');
+            element.scrollTop = element.scrollHeight;
+        })
+    }
+
     function initSocket(username) {
         const connectionOptions = {
             reconnectionAttempts: 3,
@@ -72,13 +79,19 @@ app.controller('indexController', ['$scope', 'indexFactory', ($scope, indexFacto
                         username: username,
                         text: message
                     }
+
                     $scope.messages.push(messageData);
                     $scope.message = '';
-                    setTimeout(() => {
-                        const element = document.getElementById('chat-area');
-                        element.scrollTop = element.scrollHeight;
-                    })
+
+                    socket.emit('newMessage', messageData);
+                    scrollTop();
+
                 }
+                socket.on('newMessage', (data) => {
+                    $scope.messages.push(data);
+                    $scope.$apply();
+                    scrollTop();
+                })
             }).catch((err) => {
                 console.log(err);
             })
