@@ -14,6 +14,13 @@ app.controller('indexController', ['$scope', 'indexFactory', ($scope, indexFacto
         }
     }
 
+    function showBubble(id, message) {
+        $('#' + id).find('.message').show().html(message);
+        setTimeout(() => {
+            $('#' + id).find('.message').hide();
+        }, 2000)
+    }
+
     function scrollTop() {
         setTimeout(() => {
             const element = document.getElementById('chat-area');
@@ -84,12 +91,15 @@ app.controller('indexController', ['$scope', 'indexFactory', ($scope, indexFacto
                     $scope.message = '';
 
                     socket.emit('newMessage', messageData);
+
+                    showBubble(socket.id, message)
                     scrollTop();
 
                 }
                 socket.on('newMessage', (data) => {
                     $scope.messages.push(data);
                     $scope.$apply();
+                    showBubble(data.socketId, data.text)
                     scrollTop();
                 })
             }).catch((err) => {
